@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/reset.css" />
+    <style>
+      body {
+        display: flex;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .update-container {
+        width: 400px;
+        box-shadow: 0 0 5px black;
+        border-radius: 5px;
+        padding: 20px;
+      }
+
+      h1 {
+        background-color: antiquewhite;
+        padding: 10px;
+      }
+
+      .update-box {
+        padding: 10px 0;
+      }
+
+      .update-box > div {
+        margin: 10px 0;
+      }
+
+      /* error 메시지 숨김 */
+      .update-box p {
+        display: none;
+        font-size: 12px;
+        color: red;
+      }
+
+      /* 정규표현식으로 오류를 검사하고 오류가 발생시 표시 */
+      .update-box p.active {
+        display: block;
+      }
+
+      /* 나중에 재디자인 */
+      .update-box label {
+        display: block;
+      }
+
+      .update-box input {
+        display: block;
+        width: 100%;
+        height: 40px;
+      }
+
+      #updateBtn {
+        width: 100%;
+        height: 40px;
+        background-color: rgb(83, 16, 83);
+        color: #fff;
+        border: 1px solid rgb(83, 16, 83);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="update-container">
+      <h1>수정할 내용을 작성세요.</h1>
+      <div class="update-box">
+        <div>
+          <label for="userName">이름</label>
+          <input
+            type="text"
+            id="userName"
+            name="userName"
+            placeholder="3이상 문자로 입력하세요."
+          />
+          <p id="userNameErr">이름은 3글자 이상 입력해야 합니다.</p>
+        </div>
+        <div>
+          <label for="userEmail">이메일</label>
+          <input
+            type="email"
+            name="userEmail"
+            id="userEmail"
+            placeholder="userEmail@naver.com"
+          />
+          <p id="userEmailErr">이메일을 다시 입력하세요.</p>
+        </div>
+        <div>
+          <label for="userPwd">비밀번호</label
+          ><input
+            type="password"
+            name="userPwd"
+            id="userPwd"
+            placeholder="한글자이상 특수문자와 숫자를 포함하세요."
+          />
+          <p id="userPwdErr1">한글자이상 특수문자와 숫자를 포함해야 합니다.</p>
+        </div>
+
+        <div>
+          <label for="userRepwd">비밀번호재입력</label
+          ><input
+            type="password"
+            name="userRepwd"
+            id="userRepwd"
+            placeholder="비밀번호를 다시 입력하세요."
+          />
+          <p id="userPwdErr2">이전에 입력한 비밀번호와 일치하지 않습니다.</p>
+        </div>
+
+        <div><button id="updateBtn">수정</button></div>
+      </div>
+    </div>
+
+    <script>
+      const fetchHandle = (url, method, payload) => {
+        fetch(url, {
+          method,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        })
+          .then((res) => res.json())
+          .then((res) => console.log(res.message));
+        // 정상일때 비정상일때 처리 필요
+      };
+
+      const regexChecked = (event, regex) => {
+        const input = event.target;
+        const inputValue = input.value;
+        const checked = regex.test(inputValue);
+
+        if (checked && inputValue) {
+          input.nextElementSibling.classList.remove("active");
+        } else {
+          input.nextElementSibling.classList.add("active");
+        }
+      };
+
+      // 한글이름 적어도 3자리이상 입력
+      const userName = document.querySelector("#userName");
+      userName.addEventListener("input", (event) => {
+        const regex = /^[가-힣]{2,4}|^[a-zA-Z]{5,10}\s?/gi;
+
+        regexChecked(event, regex);
+      });
+
+      const userEmail = document.querySelector("#userEmail");
+      userEmail.addEventListener("input", (event) => {
+        const regex = /[\w._-]+@[\w._-]+\.[a-zA-Z]+/gi;
+        // userEmail@naver.com
+
+        regexChecked(event, regex);
+      });
+
+      const userPwd = document.querySelector("#userPwd");
+      userPwd.addEventListener("input", (event) => {
+        const regex = /[\w$@!%]{6,10}/gi;
+        // 회사마다 사용할 수 있는 특수문자 제한
+        regexChecked(event, regex);
+      });
+
+      const userRepwd = document.querySelector("#userRepwd");
+      userRepwd.addEventListener("input", (event) => {
+        const targetValue = event.target.value;
+        const firstValue = userPwd.value;
+
+        console.log(targetValue, firstValue);
+        if (targetValue === firstValue) {
+          event.target.nextElementSibling.classList.remove("active");
+        } else {
+          event.target.nextElementSibling.classList.add("active");
+        }
+      });
+
+      const updateBtn = document.querySelector("#updateBtn");
+      updateBtn.addEventListener("click", () => {
+        const name = userName.value;
+        const email = userEmail.value;
+        const pwd = userPwd.value;
+
+        const newUser = { name, email, pwd };
+        const url = `http://localhost:3000/regist`;
+
+        fetchHandle(url, "PUT", newUser);
+      });
+    </script>
+  </body>
+</html>
