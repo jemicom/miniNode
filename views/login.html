@@ -1,114 +1,106 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="../css/reset.css" />
-    <style>
-      body {
-        display: flex;
-        height: 100vh;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
 
-      .login-container {
-        width: 400px;
-        box-shadow: 0 0 5px black;
-        border-radius: 5px;
-        padding: 20px;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="../css/reset.css" />
+  <style>
+    body {
+      display: flex;
+      height: 100vh;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
 
-      h1 {
-        background-color: antiquewhite;
-        padding: 10px;
-      }
+    .login-container {
+      width: 400px;
+      box-shadow: 0 0 5px black;
+      border-radius: 5px;
+      padding: 20px;
+    }
 
-      .login-box {
-        padding: 10px 0;
-      }
+    h1 {
+      background-color: antiquewhite;
+      padding: 10px;
+    }
 
-      .login-box > div {
-        margin: 10px 0;
-      }
+    .login-box {
+      padding: 10px 0;
+    }
 
-      .login-box p {
-        display: none;
-        font-size: 12px;
-        color: red;
-      }
+    .login-box>div {
+      margin: 10px 0;
+    }
 
-      /* 나중에 재디자인 */
-      .login-box label {
-        display: block;
-      }
+    .login-box p {
+      display: none;
+      font-size: 12px;
+      color: red;
+    }
 
-      .login-box input {
-        display: block;
-        width: 100%;
-        height: 40px;
-      }
+    /* 나중에 재디자인 */
+    .login-box label {
+      display: block;
+    }
 
-      #loginBtn {
-        width: 100%;
-        height: 40px;
-        background-color: rgb(83, 16, 83);
-        color: #fff;
-        border: 1px solid rgb(83, 16, 83);
-      }
-    </style>
-  </head>
+    .login-box input {
+      display: block;
+      width: 100%;
+      height: 40px;
+    }
 
-  <body>
-    <div class="login-container">
-      <h2></h2>
-      <h1>로그인</h1>
-      <div class="login-box">
-        <div>
-          <label for="userEmail">이메일</label>
-          <input
-            type="email"
-            name="userEmail"
-            id="userEmail"
-            placeholder="userEmail@naver.com"
-          />
-          <p id="userEmailErr">이메일을 다시 입력하세요.</p>
-        </div>
-        <div>
-          <label for="userPwd">비밀번호</label
-          ><input
-            type="password"
-            name="userPwd"
-            id="userPwd"
-            placeholder="한글자이상 특수문자와 숫자를 포함하세요."
-          />
-          <p id="userPwdErr1">한글자이상 특수문자와 숫자를 포함해야 합니다.</p>
-        </div>
-        <div><button id="loginBtn">로그인</button></div>
+    #loginBtn {
+      width: 100%;
+      height: 40px;
+      background-color: rgb(83, 16, 83);
+      color: #fff;
+      border: 1px solid rgb(83, 16, 83);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-container">
+    <h2></h2>
+    <h1>로그인</h1>
+    <div class="login-box">
+      <div>
+        <label for="userEmail">이메일</label>
+        <input type="email" name="userEmail" id="userEmail" placeholder="userEmail@naver.com" />
+        <p id="userEmailErr">이메일을 다시 입력하세요.</p>
       </div>
+      <div>
+        <label for="userPwd">비밀번호</label><input type="password" name="userPwd" id="userPwd"
+          placeholder="한글자이상 특수문자와 숫자를 포함하세요." />
+        <p id="userPwdErr1">한글자이상 특수문자와 숫자를 포함해야 합니다.</p>
+      </div>
+      <div><button id="loginBtn">로그인</button></div>
     </div>
+  </div>
 
-    <script>
-      const loginBtn = document.querySelector("#loginBtn");
-      loginBtn.addEventListener("click", () => {
-        const email = document.querySelector("#userEmail").value;
-        const password = document.querySelector("#userPwd").value;
+  <script>
+    const loginBtn = document.querySelector("#loginBtn");
+    loginBtn.addEventListener("click", () => {
+      const email = document.querySelector("#userEmail").value;
+      const password = document.querySelector("#userPwd").value;
 
-        fetch("http://localhost:3000/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        })
-          .then((res) => res.json())
-          .then((res) => {
-            console.log(res);
-            const h2 = document.querySelector("h2");
-            h2.innerHTML = res.data + "님";
-          });
-      });
-    </script>
-  </body>
+      fetch("http://localhost:3500/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          console.log(res);
+          const h2 = document.querySelector("h2");
+          h2.innerHTML = res.data + "님";
+        });
+    });
+  </script>
+</body>
+
 </html>
