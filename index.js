@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 // console.log(process.env);
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3700;
 // .env 만든 PORT 인식
 
 // const PORT = 3500;

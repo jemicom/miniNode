@@ -88,7 +88,7 @@
       const email = document.querySelector("#userEmail").value;
       const password = document.querySelector("#userPwd").value;
 
-      fetch("http://localhost:3500/login", {
+      fetch("https://port-0-mininode-7xwyjq992llivdr0fu.sel4.cloudtype.app/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
